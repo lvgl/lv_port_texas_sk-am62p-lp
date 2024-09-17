@@ -17,7 +17,10 @@ The guide is based on TI [documentation](https://dev.ti.com/tirex/explore/node?n
   - Screen (HDMI)
   - Ethernet
 
-- You need and SD card to flash the image. Follow the guide to download or build the `.wic` image, then if there are problems encountered flashing the SD card with BalenaEtcher as mentioned in the documentation, use this command instead: 
+- An SD card is needed to flash the image. Follow the guide to download or build the `.wic` image
+  
+- If there are problems encountered flashing the SD card with BalenaEtcher as mentioned in the documentation, use this command instead: 
+
   ```bash
   # Mount the SD on your system and find where it was mounter (e.g.: sda, sdb)
   sudo dd if=path/to/am62p-image.wic of=/dev/sdX bs=4M status=progress conv=fsync
