@@ -28,3 +28,22 @@ The guide is based on TI [documentation](https://dev.ti.com/tirex/explore/node?n
 
 - Use the UART to ensure the system has started successfully.
 
+
+
+## Port LVGL on the board
+
+Support to run docker systems on arm64: 
+```bash
+sudo apt-get install qemu-user-static
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+```
+
+Build the docker image: 
+```bash
+docker build --platform linux/arm64/v8 -t lvgl-build-arm64-image . 
+```
+
+Run the executable on the target: 
+```bash
+```
+
