@@ -74,7 +74,7 @@ Run the executable on the target:
 - Start the application
   ```bash
   ssh root@<board_ip>
-  systemctl stop weston.service
+  systemctl stop weston.service ## stop default presentation screen if it is running
   ./lvgl-demo
   ```
 
