@@ -29,6 +29,7 @@ WORKDIR /workdir/lv_port_linux
 
 # Copy the lv_conf.h from the build context to the repository
 COPY lv_conf.h /workdir/lv_port_linux/lv_conf.h
+COPY main.c /workdir/lv_port_linux/main.c
 
 # Verify that GCC, G++, and CMake are installed
 RUN gcc --version && g++ --version && cmake --version
@@ -37,5 +38,13 @@ RUN gcc --version && g++ --version && cmake --version
 RUN cmake -B build-arm64 -S . && \
     make -j $(nproc) -C build-arm64
 
-# Default command to start a shell
-CMD ["/bin/bash"]
+# Copy the built executable to the /output directory
+RUN mkdir -p /output && cp /workdir/lv_port_linux/bin/main /output/lvgl-demo
+
+CMD ["cp", "bin/main", "/output/lvgl-demo"]
+
+
+
+
+
+
