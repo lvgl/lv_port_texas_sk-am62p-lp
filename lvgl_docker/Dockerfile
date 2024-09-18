@@ -35,7 +35,7 @@ COPY main.c /workdir/lv_port_linux/main.c
 RUN gcc --version && g++ --version && cmake --version
 
 # Build the project
-RUN cmake -B build-arm64 -S . && \
+RUN cmake -B build-arm64 -S . -DCMAKE_C_FLAGS="-I/usr/include/libdrm" && \
     make -j $(nproc) -C build-arm64
 
 # Copy the built executable to the /output directory

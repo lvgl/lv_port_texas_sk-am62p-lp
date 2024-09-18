@@ -74,11 +74,64 @@ Run the executable on the target:
 - Start the application
   ```bash
   ssh root@<board_ip>
-  systemctl stop weston.service
+  systemctl stop weston.service ## stop presentation screen on startup
   ./lvgl-demo
   ```
 
-  
+
+
+
+## Benchmark results
+
+**Frame buffer, 1 thread**
+
+TODO: 
+
+|      |      |      |      |      |      |
+| ---- | ---- | ---- | ---- | ---- | ---- |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+|      |      |      |      |      |      |
+
+**Frame buffer, 4 threads**
+
+| Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
+| ------------------------- | -------- | -------- | --------- | ----------- | ---------- |
+| Empty screen              | 44.00%   | 25       | 15        | 7           | 8          |
+| Moving wallpaper          | 86.00%   | 12       | 68        | 59          | 9          |
+| Single rectangle          | 21.00%   | 29       | 2         | 1           | 1          |
+| Multiple rectangles       | 50.00%   | 28       | 18        | 7           | 11         |
+| Multiple RGB images       | 81.00%   | 28       | 27        | 18          | 9          |
+| Multiple ARGB images      | 76.00%   | 27       | 24        | 15          | 9          |
+| Rotated ARGB images       | 95.00%   | 6        | 132       | 123         | 9          |
+| Multiple labels           | 70.00%   | 29       | 20        | 12          | 8          |
+| Screen sized text         | 4.00%    | 5        | 1         | 1           | 0          |
+| Multiple arcs             | 74.00%   | 28       | 25        | 16          | 9          |
+| Containers                | 69.00%   | 27       | 22        | 14          | 8          |
+| Containers with overlay   | 93.00%   | 9        | 93        | 82          | 11         |
+| Containers with opa       | 93.00%   | 12       | 70        | 58          | 12         |
+| Containers with opa_layer | 87.00%   | 22       | 35        | 26          | 9          |
+| Containers with scrolling | 87.00%   | 23       | 34        | 25          | 9          |
+| Widgets demo              | 50.00%   | 22       | 25        | 21          | 4          |
+| All scenes avg.           | 67.00%   | 20       | 37        | 30          | 7          |
+
+
+
+
 
 ## TroubleShooting
 
