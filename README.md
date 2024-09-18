@@ -6,6 +6,27 @@ This guide provides steps to setup the AM62P-LP board and to cross cross-compile
 
 
 
+## Buy
+
+You can purchase the AM62P-LP board directly from TI website.
+
+
+
+## Specification
+
+### CPU and memory
+
+- Module: AM62P
+- RAM: 8GB internal
+- Flash: Can boot from SD
+- GPU: 3D GPU and 4K acceleration
+
+### Hardware
+
+- Screen: HDMI 1920x1080 touchscreen
+
+
+
 ## Board setup
 
 The guide is based on TI [documentation](https://dev.ti.com/tirex/explore/node?node=A__AaM8dWF78x986JGiasfPsA__am62px-devtools__FUz-xrs__LATEST)
@@ -74,10 +95,28 @@ Run the executable on the target:
 - Start the application
   ```bash
   ssh root@<board_ip>
-  systemctl stop weston.service ## stop presentation screen on startup
+  systemctl stop weston.service ## stop default presentation screen if it is running
   ./lvgl-demo
   ```
 
+
+
+## Change configuration
+
+There are 2 configuration examples that can be used in lvgl_docker: 
+
+- lv_conf_fb_1_thread.h
+- lv_conf_fb_4_threads.h
+
+The default configuration used is lv_conf_fb_4_threads.h. To change the configuration, modify the lv_conf.h file with the desired configuration.
+
+
+
+## Change Application
+
+In the folder lvgl_docker, modify the "main.c" file.
+
+This docker is only for tests purpose, for more complex modifications, modify the docker accordingly to clone another repository or add the files to the cloned repository.
 
 
 
@@ -85,27 +124,25 @@ Run the executable on the target:
 
 **Frame buffer, 1 thread**
 
-TODO: 
-
-|      |      |      |      |      |      |
-| ---- | ---- | ---- | ---- | ---- | ---- |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
-|      |      |      |      |      |      |
+| Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
+| ------------------------- | -------- | -------- | --------- | ----------- | ---------- |
+| Empty screen              | 43.00%   | 25       | 15        | 7           | 8          |
+| Moving wallpaper          | 87.00%   | 13       | 68        | 59          | 9          |
+| Single rectangle          | 16.00%   | 29       | 2         | 1           | 1          |
+| Multiple rectangles       | 51.00%   | 29       | 17        | 6           | 11         |
+| Multiple RGB images       | 87.00%   | 18       | 45        | 37          | 8          |
+| Multiple ARGB images      | 88.00%   | 20       | 39        | 30          | 9          |
+| Rotated ARGB images       | 96.00%   | 5        | 162       | 153         | 9          |
+| Multiple labels           | 86.00%   | 27       | 27        | 19          | 8          |
+| Screen sized text         | 5.00%    | 5        | 2         | 2           | 0          |
+| Multiple arcs             | 80.00%   | 20       | 39        | 31          | 8          |
+| Containers                | 82.00%   | 25       | 29        | 21          | 8          |
+| Containers with overlay   | 94.00%   | 8        | 107       | 96          | 11         |
+| Containers with opa       | 94.00%   | 9        | 91        | 78          | 13         |
+| Containers with opa_layer | 95.00%   | 8        | 106       | 92          | 14         |
+| Containers with scrolling | 92.00%   | 15       | 57        | 49          | 8          |
+| Widgets demo              | 50.00%   | 20       | 33        | 29          | 4          |
+| All scenes avg.           | 71.00%   | 17       | 52        | 44          | 8          |
 
 **Frame buffer, 4 threads**
 
@@ -128,8 +165,6 @@ TODO:
 | Containers with scrolling | 87.00%   | 23       | 34        | 25          | 9          |
 | Widgets demo              | 50.00%   | 22       | 25        | 21          | 4          |
 | All scenes avg.           | 67.00%   | 20       | 37        | 30          | 7          |
-
-
 
 
 
