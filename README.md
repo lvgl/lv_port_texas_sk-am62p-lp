@@ -28,3 +28,66 @@ The guide is based on TI [documentation](https://dev.ti.com/tirex/explore/node?n
 
 - Use the UART to ensure the system has started successfully.
 
+
+
+## Port LVGL on the board
+
+Support to run docker systems on arm64: 
+```bash
+sudo apt-get install qemu-user-static
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+```
+
+Build the docker image: 
+```bash
+docker build --platform linux/arm64/v8 -t lvgl-build-arm64-image . 
+```
+
+Run the executable on the target: 
+
+- Get the IP of the target board:
+
+  - Option 1: from the UART, on the board: 
+    ```bash
+    ip a
+    ```
+
+  - Option 2 : Get the IP from your host with nmap
+    ```bash
+    ## Install nmap if it is not yet on your system
+    sudo apt install nmap
+    ## Find the IP of the board. You need to know your ip (ifconfig or ip a)
+    ## YOUR_IP should be built like this :
+    ## If the ip is 192.168.1.86, then you should have 192.168.1.0/24
+    nmap -sn <YOUR_IP>.0/24 | grep am62pxx   
+    ```
+
+- Then transfer the executable on the board: 
+  ```bash
+  ## Copy the executable on the host
+  docker run --rm --platform linux/arm64 -v $(pwd)/output:/output lvgl-build-arm64-image
+  
+  ## Transfer the executable on the board
+  scp output/lvgl-demo root@192.168.1.123:/root
+  ```
+
+- Start the application
+  ```bash
+  ssh root@<board_ip>
+  systemctl stop weston.service ## stop default presentation screen if it is running
+  ./lvgl-demo
+  ```
+
+  
+
+## TroubleShooting
+
+### Output folder permissions
+
+If there is any problem with the output folder generated permissions, modify the permissions: 
+```bash
+sudo chown -R $(whoami):$(whoami) output/
+```
+
+
+
