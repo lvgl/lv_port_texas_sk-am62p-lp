@@ -16,7 +16,7 @@ You can purchase the AM62P-LP board directly from TI website.
 
 ### CPU and memory
 
-- Module: AM62P
+- Module: AM62P Q
 - RAM: 8GB internal
 - Flash: Can boot from SD
 - GPU: 3D GPU and 4K acceleration
@@ -126,45 +126,45 @@ This docker is only for tests purpose, for more complex modifications, modify th
 
 | Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
 | ------------------------- | -------- | -------- | --------- | ----------- | ---------- |
-| Empty screen              | 43.00%   | 25       | 15        | 7           | 8          |
-| Moving wallpaper          | 87.00%   | 13       | 68        | 59          | 9          |
-| Single rectangle          | 16.00%   | 29       | 2         | 1           | 1          |
-| Multiple rectangles       | 51.00%   | 29       | 17        | 6           | 11         |
-| Multiple RGB images       | 87.00%   | 18       | 45        | 37          | 8          |
-| Multiple ARGB images      | 88.00%   | 20       | 39        | 30          | 9          |
-| Rotated ARGB images       | 96.00%   | 5        | 162       | 153         | 9          |
-| Multiple labels           | 86.00%   | 27       | 27        | 19          | 8          |
-| Screen sized text         | 5.00%    | 5        | 2         | 2           | 0          |
-| Multiple arcs             | 80.00%   | 20       | 39        | 31          | 8          |
-| Containers                | 82.00%   | 25       | 29        | 21          | 8          |
-| Containers with overlay   | 94.00%   | 8        | 107       | 96          | 11         |
-| Containers with opa       | 94.00%   | 9        | 91        | 78          | 13         |
-| Containers with opa_layer | 95.00%   | 8        | 106       | 92          | 14         |
-| Containers with scrolling | 92.00%   | 15       | 57        | 49          | 8          |
-| Widgets demo              | 50.00%   | 20       | 33        | 29          | 4          |
-| All scenes avg.           | 71.00%   | 17       | 52        | 44          | 8          |
+| Empty screen              | 78.00%   | 17       | 41        | 18          | 23         |
+| Moving wallpaper          | 96.00%   | 5        | 178       | 154         | 24         |
+| Single rectangle          | 23.00%   | 28       | 5         | 3           | 2          |
+| Multiple rectangles       | 86.00%   | 17       | 49        | 18          | 31         |
+| Multiple RGB images       | 95.00%   | 6        | 136       | 113         | 23         |
+| Multiple ARGB images      | 95.00%   | 7        | 119       | 95          | 24         |
+| Rotated ARGB images       | 98.00%   | 1        | 506       | 483         | 23         |
+| Multiple labels           | 94.00%   | 10       | 79        | 55          | 24         |
+| Screen sized text         | 6.00%    | 5        | 2         | 2           | 0          |
+| Multiple arcs             | 84.00%   | 10       | 79        | 56          | 23         |
+| Containers                | 96.00%   | 6        | 140       | 117         | 23         |
+| Containers with overlay   | 98.00%   | 3        | 315       | 290         | 25         |
+| Containers with opa       | 98.00%   | 3        | 262       | 238         | 24         |
+| Containers with opa_layer | 98.00%   | 2        | 301       | 277         | 24         |
+| Containers with scrolling | 96.00%   | 6        | 154       | 130         | 24         |
+| Widgets demo              | 35.00%   | 20       | 57        | 50          | 7          |
+| All scenes avg.           | 79.00%   | 9        | 151       | 131         | 20         |
 
 **Frame buffer, 4 threads**
 
 | Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
 | ------------------------- | -------- | -------- | --------- | ----------- | ---------- |
-| Empty screen              | 44.00%   | 25       | 15        | 7           | 8          |
-| Moving wallpaper          | 86.00%   | 12       | 68        | 59          | 9          |
-| Single rectangle          | 21.00%   | 29       | 2         | 1           | 1          |
-| Multiple rectangles       | 50.00%   | 28       | 18        | 7           | 11         |
-| Multiple RGB images       | 81.00%   | 28       | 27        | 18          | 9          |
-| Multiple ARGB images      | 76.00%   | 27       | 24        | 15          | 9          |
-| Rotated ARGB images       | 95.00%   | 6        | 132       | 123         | 9          |
-| Multiple labels           | 70.00%   | 29       | 20        | 12          | 8          |
-| Screen sized text         | 4.00%    | 5        | 1         | 1           | 0          |
-| Multiple arcs             | 74.00%   | 28       | 25        | 16          | 9          |
-| Containers                | 69.00%   | 27       | 22        | 14          | 8          |
-| Containers with overlay   | 93.00%   | 9        | 93        | 82          | 11         |
-| Containers with opa       | 93.00%   | 12       | 70        | 58          | 12         |
-| Containers with opa_layer | 87.00%   | 22       | 35        | 26          | 9          |
-| Containers with scrolling | 87.00%   | 23       | 34        | 25          | 9          |
-| Widgets demo              | 50.00%   | 22       | 25        | 21          | 4          |
-| All scenes avg.           | 67.00%   | 20       | 37        | 30          | 7          |
+| Empty screen              | 77.00%   | 17       | 42        | 18          | 24         |
+| Moving wallpaper          | 96.00%   | 5        | 179       | 155         | 24         |
+| Single rectangle          | 26.00%   | 27       | 5         | 3           | 2          |
+| Multiple rectangles       | 81.00%   | 17       | 49        | 19          | 30         |
+| Multiple RGB images       | 93.00%   | 11       | 74        | 50          | 24         |
+| Multiple ARGB images      | 93.00%   | 12       | 70        | 46          | 24         |
+| Rotated ARGB images       | 97.00%   | 2        | 353       | 328         | 25         |
+| Multiple labels           | 92.00%   | 14       | 56        | 32          | 24         |
+| Screen sized text         | 6.00%    | 5        | 2         | 2           | 0          |
+| Multiple arcs             | 85.00%   | 15       | 55        | 31          | 24         |
+| Containers                | 93.00%   | 10       | 80        | 57          | 23         |
+| Containers with overlay   | 97.00%   | 3        | 254       | 232         | 22         |
+| Containers with opa       | 96.00%   | 7        | 121       | 97          | 24         |
+| Containers with opa_layer | 96.00%   | 6        | 141       | 117         | 24         |
+| Containers with scrolling | 94.00%   | 10       | 86        | 62          | 24         |
+| Widgets demo              | 34.00%   | 21       | 39        | 32          | 7          |
+| All scenes avg.           | 78.00%   | 11       | 100       | 80          | 20         |
 
 
 
