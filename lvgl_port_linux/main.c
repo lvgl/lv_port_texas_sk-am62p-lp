@@ -30,7 +30,7 @@ static const char *getenv_default(const char *name, const char *dflt)
 #if LV_USE_LINUX_FBDEV
 static void lv_linux_disp_init(void)
 {
-    const char *device = getenv_default("LV_LINUX_FBDEV_DEVICE", "/dev/fb0");
+    const char *device = getenv_default("LV_LINUX_FBDEV_DEVICE", "/dev/fb1");
     lv_display_t * disp = lv_linux_fbdev_create();
 
     lv_linux_fbdev_set_file(disp, device);

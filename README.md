@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides steps to setup the AM62P-LP board and to cross cross-compile an LVGL project on the target.
+This guide provides steps to setup the SK-AM62P-LP starter kit and to cross cross-compile an LVGL application to run it the target.
 
 
 
@@ -12,151 +12,9 @@ You can purchase the AM62P-LP board directly from TI website.
 
 
 
-## Specification
+## Benchmark
 
-### CPU and memory
-
-- Module: AM62P Q
-- RAM: 8GB internal
-- Flash: Can boot from SD
-- GPU: 3D GPU and 4K acceleration
-
-### Hardware
-
-- Screen: HDMI 1920x1080 touchscreen
-
-
-
-## Board setup
-
-- Connect to the board the following: 
-
-  - UART
-  - Power
-  - Screen (HDMI)
-  - Ethernet
-
-- SD card is needed to flash the image. 
-
-  - Follow the [guide](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) to download `.wic` image
-
-  - Follow this [guide](https://software-dl.ti.com/processor-sdk-linux-rt/esd/AM62PX/09_01_00_08/exports/docs/linux/Overview_Building_the_SDK.html) to build the SDK with Yocto
-
-- If there are problems encountered flashing the SD card with BalenaEtcher as mentioned in the documentation, use this command instead: 
-
-  ```bash
-  # Mount the SD on your system and find where it was mounter (e.g.: sda, sdb)
-  sudo dd if=path/to/am62p-image.wic of=/dev/sdX bs=4M status=progress conv=fsync
-  ```
-
-- Use the UART to ensure the system has started successfully.
-
-
-
-## Run LVGL on the board
-
-### Start default benchmark configuration 
-
-Support to run docker systems on arm64: 
-
-```bash
-sudo apt-get install qemu-user-static
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-```
-
-Build the docker image: 
-
-```bash
-./scripts/docker_setup.sh --build
-```
-
-Run the executable on the target: 
-
-- Get the IP of the target board:
-
-  - Option 1: from the UART, on the board: 
-
-    ```bash
-    sudo picocom -b 115200 /dev/ttyUSB0
-    ## Then inside the console, log as "root", no password required 
-    ## Then retrieve the ip of the board
-    ip a
-    ```
-
-  - Option 2 : Get the IP from your host with nmap
-
-    ```bash
-    ## Install nmap if it is not yet on your system
-    sudo apt install nmap
-    ## Find the IP of the board. You need to know your ip (ifconfig or ip a)
-    ## HOST_IP should be built like this :
-    ## If the ip is 192.168.1.86, then HOST_IP = 192.168.1.0/24
-    nmap -sn <HOST_IP>.0/24 | grep am62pxx   
-    ```
-
-- Then transfer the executable on the board: 
-
-  ```bash
-  ## Copy the executable on the host
-  ./scripts/docker_setup.sh --run
-  
-  ## Transfer the executable on the board
-  scp lvgl_port_linux/bin/lvgl-app root@<BOARD_IP>:/root
-  ```
-
-- Start the application
-
-  ```bash
-  ssh root@<BOARD_IP>
-  
-  ## stop default presentation screen if it is running
-  systemctl stop ti-apps-launcher
-  ######################################
-  ## WARNING: Not to do if using wayland
-  systemctl stop weston.socket 
-  systemctl stop weston.service 
-  ######################################
-  
-  ./lvgl-app
-  ```
-
-
-
-### Change configuration
-
-Some configurations are provided in the folder `lvgl_conf_example` .
-
-The default configuration used is lv_conf_fb_4_threads.h. To change the configuration, modify the `lvgl_port_linux/lv_conf.h` file with the desired configuration.
-
-Also modify the `lv_port_linux/CMakelists.txt` file option: 
-
-- LV_USE_WAYLAND
-- LV_USE_SDL
-- LV_USE_DRM
-
-Default is for fbdev backend. Only set 1 of these options to "ON" and ensure it's coherent with `lv_conf.h`. This can also be changed from the script `scripts/build_app.sh`.
-
-
-
-### Start with your own application
-
-The folder `lvgl_port_linux` is an example of an application using LVGL. 
-
-LVGL is integrated as a submodule in the folder. To change the version of LVGL, modify the submodule properties in the file `.gitmodules`.
-
-The file `main.c` is the default application provided and is configured to run the benchmark demo provided by LVGL library. 
-
-The main steps to create your own application are: 
-
-- Modify `main.c`
-- Add any folders and files to extend the functionalities
-- Update `Dockerfile` to add any package
-- Modify `CMakeLists.txt` provided file to ensure all the required files are compiled and linked
-- Use the docker scripts provided to build the application for arm64 architecture.
-
-
-
-## Benchmark results
+The default buffering is fbdev.
 
 **Frame buffer, 1 thread**
 
@@ -202,6 +60,187 @@ The main steps to create your own application are:
 | Widgets demo              | 19.00%   | 27       | 6         | 5           | 1          |
 | All scenes avg.           | 40.00%   | 25       | 14        | 11          | 3          |
 
+The other configurations that can be used are: 
+
+- DRM
+- Wayland
+
+Any of these buffering strategies can be used with multiple threads to render the frames.
+
+
+
+## Specification
+
+### CPU and memory
+
+- **MCU**: AM625P with Quad 64-bit Arm Cortex-A53 up to 1.4GHz, two ARM Cortex R5F single core up to 800MHz
+- **RAM**: 8GB LPDDR4
+- **Flash**: 32GB SD
+- **GPU**: PowerVR  
+
+### Display
+
+- Screen: HDMI 1920x1080 touchscreen
+
+### Connectivity
+
+- 1 Type-A USB 2.0
+- 1 Type-C dual-role device (DRD) USB 2.0 supports USB booting
+- UART
+- USB
+- Onboard XDS110 Joint Test Action Group (JTAG) emulator
+- 4 universal asynchronous receiver-transmitters (UARTs) via USB 2.0-B
+- Ethernet
+
+
+
+## Getting started
+
+### Hardware setup
+
+This [document](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) from TI provides detailed information for the hardware setup
+
+- Connect to the board the following: 
+
+  - UART
+  - Power
+  - Screen (HDMI)
+  - Ethernet
+
+- SD card is needed to flash the image. 
+
+  - Follow the [guide](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) to download `.wic` image
+
+  - Follow this [guide](https://software-dl.ti.com/processor-sdk-linux-rt/esd/AM62PX/09_01_00_08/exports/docs/linux/Overview_Building_the_SDK.html) to build the SDK with Yocto
+
+- If there are problems encountered flashing the SD card with BalenaEtcher as mentioned in the documentation, use this command instead: 
+
+  ```bash
+  # Mount the SD on your system and find where it was mounter (e.g.: sda, sdb)
+  sudo dd if=path/to/am62p-image.wic of=/dev/sdX bs=4M status=progress conv=fsync
+  ```
+
+- Use the UART to ensure the system has started successfully.
+
+
+
+### Software setup
+
+This guide was tested on Ubuntu 22.04 host.
+
+#### Install docker
+
+- Follow this [tutorial](/https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04) to install and setup docker on your system.
+
+- Support to run arm64 docker containers on the host: 
+  ```bash
+  sudo apt-get install qemu-user-static
+  docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  ```
+
+#### Install utilities 
+
+```bash
+sudo apt install picocom nmap
+```
+
+
+
+### Run the default project
+
+Clone the repository: 
+```bash
+git clone --recurse-submodules https://github.com/lvgl/lv_port_texas_sk-am62p-lp.git
+```
+
+Build the docker image and the lvgl benchmark application: 
+
+```bash
+cd lv_port_texas_sk-am62p-lp
+./scripts/docker_setup.sh --build
+./scripts/docker_setup.sh --run
+```
+
+Run the executable on the target: 
+
+- Get the IP of the target board:
+
+  - Option 1: from the UART, on the board: 
+
+    ```bash
+    sudo picocom -b 115200 /dev/ttyUSB0
+    ## Then inside the console, log as "root", no password required 
+    ## Then retrieve the ip of the board
+    ip a
+    ```
+
+  - Option 2: Get the IP from your host with nmap
+
+    ```bash
+    ## Install nmap if it is not yet on your system
+    sudo apt install nmap
+    ## Find the IP of the board. You need to know your ip (ifconfig or ip a)
+    ## HOST_IP should be built like this :
+    ## If the ip is 192.168.1.86, in the following command HOST_IP = 192.168.1.0/24
+    nmap -sn <HOST_IP>/24 | grep am62pxx   
+    ```
+
+- Then transfer the executable on the board: 
+
+  ```bash
+  scp lvgl_port_linux/bin/lvgl-app root@<BOARD_IP>:/root
+  ```
+  
+- Start the application
+
+  ```bash
+  ssh root@<BOARD_IP>
+  
+  ## stop default presentation screen if it is running
+  systemctl stop ti-apps-launcher
+  ######################################
+  ## WARNING: do not stop these services if using wayland demo
+  systemctl stop weston.socket 
+  systemctl stop weston.service 
+  ######################################
+  
+  ./lvgl-app
+  ```
+
+
+
+### Change configuration
+
+Some configurations are provided in the folder `lvgl_conf_example` .
+
+The default configuration used is lv_conf_fb_4_threads.h. To change the configuration, modify the `lvgl_port_linux/lv_conf.h` file with the desired configuration.
+
+Also modify the `lv_port_linux/CMakelists.txt` file option: 
+
+- LV_USE_WAYLAND
+- LV_USE_SDL
+- LV_USE_DRM
+
+Default is for fbdev backend. Only set 1 of these options to "ON" and ensure it's coherent with `lv_conf.h`. This can also be changed from the script `scripts/build_app.sh`.
+
+
+
+### Start with your own application
+
+The folder `lvgl_port_linux` is an example of an application using LVGL. 
+
+LVGL is integrated as a submodule in the folder. To change the version of LVGL, modify the submodule properties in the file `.gitmodules`.
+
+The file `main.c` is the default application provided and is configured to run the benchmark demo provided by LVGL library. 
+
+The main steps to create your own application are: 
+
+- Modify `main.c`
+- Add any folders and files to extend the functionalities
+- Update `Dockerfile` to add any package
+- Modify `CMakeLists.txt` provided file to ensure all the required files are compiled and linked
+- Use the docker scripts provided to build the application for ARM64 architecture.
+
 
 
 ## TroubleShooting
@@ -211,7 +250,7 @@ The main steps to create your own application are:
 If there is any problem with the output folder generated permissions, modify the permissions: 
 
 ```bash
-sudo chown -R $(whoami):$(whoami) output/
+sudo chown -R $(whoami):$(whoami) lvgl_port_linux/bin
 ```
 
 
