@@ -29,7 +29,7 @@ You can purchase the AM62P-LP board directly from TI website.
 
 ## Board setup
 
-The guide is based on TI [documentation](https://dev.ti.com/tirex/explore/node?node=A__AaM8dWF78x986JGiasfPsA__am62px-devtools__FUz-xrs__LATEST)
+The guide is based on TI [documentation](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html)
 
 - Connect to the board the following: 
 
@@ -38,8 +38,8 @@ The guide is based on TI [documentation](https://dev.ti.com/tirex/explore/node?n
   - Screen (HDMI)
   - Ethernet
 
-- An SD card is needed to flash the image. Follow the guide to download or build the `.wic` image
-  
+- SD card is needed to flash the image. Follow the [guide](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) to download or build the `.wic` image
+
 - If there are problems encountered flashing the SD card with BalenaEtcher as mentioned in the documentation, use this command instead: 
 
   ```bash
@@ -51,17 +51,21 @@ The guide is based on TI [documentation](https://dev.ti.com/tirex/explore/node?n
 
 
 
-## Port LVGL on the board
+## Run LVGL on the board
+
+### Start default benchmark configuration 
 
 Support to run docker systems on arm64: 
+
 ```bash
 sudo apt-get install qemu-user-static
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 ```
 
 Build the docker image: 
+
 ```bash
-docker build --platform linux/arm64/v8 -t lvgl-build-arm64-image . 
+./scripts/docker_setup.sh --build
 ```
 
 Run the executable on the target: 
@@ -69,54 +73,84 @@ Run the executable on the target:
 - Get the IP of the target board:
 
   - Option 1: from the UART, on the board: 
+
     ```bash
+    sudo picocom -b 115200 /dev/ttyUSB0
+    ## Then inside the console, log as "root", no password required 
+    ## Then retrieve the ip of the board
     ip a
     ```
 
   - Option 2 : Get the IP from your host with nmap
+
     ```bash
     ## Install nmap if it is not yet on your system
     sudo apt install nmap
     ## Find the IP of the board. You need to know your ip (ifconfig or ip a)
-    ## YOUR_IP should be built like this :
-    ## If the ip is 192.168.1.86, then you should have 192.168.1.0/24
-    nmap -sn <YOUR_IP>.0/24 | grep am62pxx   
+    ## HOST_IP should be built like this :
+    ## If the ip is 192.168.1.86, then HOST_IP = 192.168.1.0/24
+    nmap -sn <HOST_IP>.0/24 | grep am62pxx   
     ```
 
 - Then transfer the executable on the board: 
+
   ```bash
   ## Copy the executable on the host
-  docker run --rm --platform linux/arm64 -v $(pwd)/output:/output lvgl-build-arm64-image
+  ./scripts/docker_setup.sh --run
   
   ## Transfer the executable on the board
-  scp output/lvgl-demo root@192.168.1.123:/root
+  scp lvgl_port_linux/bin/lvgl-app root@<BOARD_IP>:/root
   ```
 
 - Start the application
+
   ```bash
-  ssh root@<board_ip>
-  systemctl stop weston.service ## stop default presentation screen if it is running
-  ./lvgl-demo
+  ssh root@<BOARD_IP>
+  
+  ## stop default presentation screen if it is running
+  systemctl stop ti-apps-launcher
+  ######################################
+  ## WARNING: Not to do if using wayland
+  systemctl stop weston.socket 
+  systemctl stop weston.service 
+  ######################################
+  
+  ./lvgl-app
   ```
 
 
 
-## Change configuration
+### Change configuration
 
-There are 2 configuration examples that can be used in lvgl_docker: 
+Some configurations are provided in the folder `lvgl_conf_example` .
 
-- lv_conf_fb_1_thread.h
-- lv_conf_fb_4_threads.h
+The default configuration used is lv_conf_fb_4_threads.h. To change the configuration, modify the `lvgl_port_linux/lv_conf.h` file with the desired configuration.
 
-The default configuration used is lv_conf_fb_4_threads.h. To change the configuration, modify the lv_conf.h file with the desired configuration.
+Also modify the `lv_port_linux/CMakelists.txt` file option: 
+
+- LV_USE_WAYLAND
+- LV_USE_SDL
+- LV_USE_DRM
+
+Default is for fbdev backend. Only set 1 of these options to "ON" and ensure it's coherent with `lv_conf.h`.
 
 
 
-## Change Application
+### Start with your own application
 
-In the folder lvgl_docker, modify the "main.c" file.
+The folder `lvgl_port_linux` is an example of an application using LVGL. 
 
-This docker is only for tests purpose, for more complex modifications, modify the docker accordingly to clone another repository or add the files to the cloned repository.
+LVGL is integrated as a submodule in the folder. To change the version of LVGL, modify the submodule properties in the file `.gitmodules`.
+
+The file `main.c` is the default application provided and is configured to run the benchmark demo provided by LVGL library. 
+
+The main steps to create your own application are: 
+
+- Modify `main.c`
+- Add any folders and files to extend the functionalities
+- Update `Dockerfile` to add any package
+- Modify `CMakeLists.txt` provided file to ensure all the required files are compiled and linked
+- Use the docker scripts provided to build the application for arm64 architecture.
 
 
 
@@ -126,45 +160,45 @@ This docker is only for tests purpose, for more complex modifications, modify th
 
 | Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
 | ------------------------- | -------- | -------- | --------- | ----------- | ---------- |
-| Empty screen              | 78.00%   | 17       | 41        | 18          | 23         |
-| Moving wallpaper          | 96.00%   | 5        | 178       | 154         | 24         |
-| Single rectangle          | 23.00%   | 28       | 5         | 3           | 2          |
-| Multiple rectangles       | 86.00%   | 17       | 49        | 18          | 31         |
-| Multiple RGB images       | 95.00%   | 6        | 136       | 113         | 23         |
-| Multiple ARGB images      | 95.00%   | 7        | 119       | 95          | 24         |
-| Rotated ARGB images       | 98.00%   | 1        | 506       | 483         | 23         |
-| Multiple labels           | 94.00%   | 10       | 79        | 55          | 24         |
-| Screen sized text         | 6.00%    | 5        | 2         | 2           | 0          |
-| Multiple arcs             | 84.00%   | 10       | 79        | 56          | 23         |
-| Containers                | 96.00%   | 6        | 140       | 117         | 23         |
-| Containers with overlay   | 98.00%   | 3        | 315       | 290         | 25         |
-| Containers with opa       | 98.00%   | 3        | 262       | 238         | 24         |
-| Containers with opa_layer | 98.00%   | 2        | 301       | 277         | 24         |
-| Containers with scrolling | 96.00%   | 6        | 154       | 130         | 24         |
-| Widgets demo              | 35.00%   | 20       | 57        | 50          | 7          |
-| All scenes avg.           | 79.00%   | 9        | 151       | 131         | 20         |
+| Empty screen              | 15.00%   | 24       | 5         | 1           | 4          |
+| Moving wallpaper          | 29.00%   | 27       | 9         | 5           | 4          |
+| Single rectangle          | 5.00%    | 27       | 0         | 0           | 0          |
+| Multiple rectangles       | 14.00%   | 27       | 4         | 2           | 2          |
+| Multiple RGB images       | 31.00%   | 27       | 9         | 5           | 4          |
+| Multiple ARGB images      | 66.00%   | 28       | 21        | 17          | 4          |
+| Rotated ARGB images       | 94.00%   | 5        | 167       | 163         | 4          |
+| Multiple labels           | 59.00%   | 28       | 15        | 11          | 4          |
+| Screen sized text         | 2.00%    | 27       | 0         | 0           | 0          |
+| Multiple arcs             | 43.00%   | 28       | 14        | 10          | 4          |
+| Containers                | 74.00%   | 28       | 24        | 20          | 4          |
+| Containers with overlay   | 91.00%   | 16       | 51        | 47          | 4          |
+| Containers with opa       | 90.00%   | 17       | 49        | 45          | 4          |
+| Containers with opa_layer | 92.00%   | 13       | 67        | 63          | 4          |
+| Containers with scrolling | 85.00%   | 27       | 28        | 24          | 4          |
+| Widgets demo              | 28.00%   | 27       | 8         | 7           | 1          |
+| All scenes avg.           | 51.00%   | 23       | 29        | 26          | 3          |
 
 **Frame buffer, 4 threads**
 
 | Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
 | ------------------------- | -------- | -------- | --------- | ----------- | ---------- |
-| Empty screen              | 77.00%   | 17       | 42        | 18          | 24         |
-| Moving wallpaper          | 96.00%   | 5        | 179       | 155         | 24         |
-| Single rectangle          | 26.00%   | 27       | 5         | 3           | 2          |
-| Multiple rectangles       | 81.00%   | 17       | 49        | 19          | 30         |
-| Multiple RGB images       | 93.00%   | 11       | 74        | 50          | 24         |
-| Multiple ARGB images      | 93.00%   | 12       | 70        | 46          | 24         |
-| Rotated ARGB images       | 97.00%   | 2        | 353       | 328         | 25         |
-| Multiple labels           | 92.00%   | 14       | 56        | 32          | 24         |
-| Screen sized text         | 6.00%    | 5        | 2         | 2           | 0          |
-| Multiple arcs             | 85.00%   | 15       | 55        | 31          | 24         |
-| Containers                | 93.00%   | 10       | 80        | 57          | 23         |
-| Containers with overlay   | 97.00%   | 3        | 254       | 232         | 22         |
-| Containers with opa       | 96.00%   | 7        | 121       | 97          | 24         |
-| Containers with opa_layer | 96.00%   | 6        | 141       | 117         | 24         |
-| Containers with scrolling | 94.00%   | 10       | 86        | 62          | 24         |
-| Widgets demo              | 34.00%   | 21       | 39        | 32          | 7          |
-| All scenes avg.           | 78.00%   | 11       | 100       | 80          | 20         |
+| Empty screen              | 15.00%   | 24       | 5         | 1           | 4          |
+| Moving wallpaper          | 26.00%   | 27       | 8         | 4           | 4          |
+| Single rectangle          | 5.00%    | 26       | 0         | 0           | 0          |
+| Multiple rectangles       | 19.00%   | 28       | 6         | 4           | 2          |
+| Multiple RGB images       | 28.00%   | 27       | 8         | 4           | 4          |
+| Multiple ARGB images      | 40.00%   | 28       | 12        | 8           | 4          |
+| Rotated ARGB images       | 87.00%   | 14       | 60        | 56          | 4          |
+| Multiple labels           | 40.00%   | 27       | 9         | 5           | 4          |
+| Screen sized text         | 2.00%    | 27       | 0         | 0           | 0          |
+| Multiple arcs             | 27.00%   | 27       | 8         | 4           | 4          |
+| Containers                | 45.00%   | 26       | 14        | 10          | 4          |
+| Containers with overlay   | 78.00%   | 28       | 26        | 22          | 4          |
+| Containers with opa       | 79.00%   | 28       | 23        | 19          | 4          |
+| Containers with opa_layer | 85.00%   | 23       | 33        | 29          | 4          |
+| Containers with scrolling | 51.00%   | 28       | 16        | 12          | 4          |
+| Widgets demo              | 19.00%   | 27       | 6         | 5           | 1          |
+| All scenes avg.           | 40.00%   | 25       | 14        | 11          | 3          |
 
 
 
@@ -173,9 +207,17 @@ This docker is only for tests purpose, for more complex modifications, modify th
 ### Output folder permissions
 
 If there is any problem with the output folder generated permissions, modify the permissions: 
+
 ```bash
 sudo chown -R $(whoami):$(whoami) output/
 ```
 
 
 
+### Wayland example runtime error
+
+While running the application, if there is an error about `XDG_RUNTIME_DIR`, add the following environment variable on the board.
+
+```bash
+export XDG_RUNTIME_DIR=/run/user/1000
+```
