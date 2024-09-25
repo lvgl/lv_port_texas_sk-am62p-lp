@@ -262,3 +262,11 @@ While running the application, if there is an error about `XDG_RUNTIME_DIR`, add
 ```bash
 export XDG_RUNTIME_DIR=/run/user/1000
 ```
+
+
+
+## Contribution and Support
+
+If you find any issues with the development board feel free to open an Issue in this repository. For LVGL related issues (features, bugs, etc) please use the main [lvgl repository](https://github.com/lvgl/lvgl).
+
+If you found a bug and found a solution too please send a Pull request. If you are new to Pull requests refer to [Our Guide](https://docs.lvgl.io/master/CONTRIBUTING.html#pull-request) to learn the basics.
