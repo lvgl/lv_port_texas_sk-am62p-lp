@@ -1,1 +1,2 @@
-output
+lvgl_port_linux/bin/
+lvgl_port_linux/build-arm64/
