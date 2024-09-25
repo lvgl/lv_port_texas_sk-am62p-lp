@@ -132,7 +132,7 @@ Also modify the `lv_port_linux/CMakelists.txt` file option:
 - LV_USE_SDL
 - LV_USE_DRM
 
-Default is for fbdev backend. Only set 1 of these options to "ON" and ensure it's coherent with `lv_conf.h`.
+Default is for fbdev backend. Only set 1 of these options to "ON" and ensure it's coherent with `lv_conf.h`. This can also be changed from the script `scripts/build_app.sh`.
 
 
 
