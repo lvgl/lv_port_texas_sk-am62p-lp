@@ -23,12 +23,4 @@ RUN apt-get update && \
 # Verify that GCC, G++, and CMake are installed
 RUN gcc --version && g++ --version && cmake --version
 
-COPY img_benchmark_cogwheel_rgb.c /workdir/lv_port_linux/lvgl/demos/benchmark/assets/img_benchmark_cogwheel_rgb.c
-
-
-
-
-
-
-
-
+CMD ["/app/scripts/build_app.sh"]
