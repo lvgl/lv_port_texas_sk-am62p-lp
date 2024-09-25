@@ -29,8 +29,6 @@ You can purchase the AM62P-LP board directly from TI website.
 
 ## Board setup
 
-The guide is based on TI [documentation](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html)
-
 - Connect to the board the following: 
 
   - UART
@@ -38,7 +36,11 @@ The guide is based on TI [documentation](https://dev.ti.com/tirex/content/tirex-
   - Screen (HDMI)
   - Ethernet
 
-- SD card is needed to flash the image. Follow the [guide](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) to download or build the `.wic` image
+- SD card is needed to flash the image. 
+
+  - Follow the [guide](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) to download `.wic` image
+
+  - Follow this [guide](https://software-dl.ti.com/processor-sdk-linux-rt/esd/AM62PX/09_01_00_08/exports/docs/linux/Overview_Building_the_SDK.html) to build the SDK with Yocto
 
 - If there are problems encountered flashing the SD card with BalenaEtcher as mentioned in the documentation, use this command instead: 
 
