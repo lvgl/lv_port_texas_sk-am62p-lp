@@ -3,7 +3,7 @@ project(lvgl)
 
 # Please set the wanted option to 'ON'. By default, FBDEV is used by default
 # be sure to also enable the selected driver in lv_conf.h
-option(LV_USE_WAYLAND "Use the wayland client backend" ON)
+option(LV_USE_WAYLAND "Use the wayland client backend" OFF)
 option(LV_USE_SDL "Use the SDL backend" OFF)
 option(LV_USE_DRM "Use the libdrm backend" OFF)
 
