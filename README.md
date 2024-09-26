@@ -2,13 +2,13 @@
 
 ## Overview
 
-This guide provides steps to setup the SK-AM62P-LP starter kit and to cross cross-compile an LVGL application to run it the target.
+This guide provides steps to setup the SK-AM62P-LP starter kit and to cross-compile an LVGL application to run it the target.
 
 
 
 ## Buy
 
-You can purchase the AM62P-LP board directly from TI website.
+You can purchase the AM62P-LP board from TI website.
 
 
 
@@ -60,7 +60,7 @@ The default buffering is fbdev.
 | Widgets demo              | 19.00%   | 27       | 6         | 5           | 1          |
 | All scenes avg.           | 40.00%   | 25       | 14        | 11          | 3          |
 
-The other configurations that can be used are: 
+The other configurations are: 
 
 - DRM
 - Wayland
@@ -74,7 +74,10 @@ Any of these buffering strategies can be used with multiple threads to render th
 ### CPU and memory
 
 - **MCU**: AM625P with Quad 64-bit Arm Cortex-A53 up to 1.4GHz, two ARM Cortex R5F single core up to 800MHz
-- **RAM**: 8GB LPDDR4
+- **RAM**: 8GB LPDDR4 
+  - 32-bits data bus with inline EEC
+  - Supports speeds up to 3200 MT/s
+
 - **Flash**: 32GB SD
 - **GPU**: PowerVR  
 
@@ -105,13 +108,13 @@ This [document](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devto
   - UART
   - Power
   - Screen (HDMI)
-  - Ethernet
+  - Ethernet (Connect the board to the same LAN the host is, the board obtains an IP address from the network manager)
 
 - SD card is needed to flash the image. 
 
-  - Follow the [guide](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) to download `.wic` image
+  - Follow the [guide](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) to download a pre-built `.wic` image
 
-  - Follow this [guide](https://software-dl.ti.com/processor-sdk-linux-rt/esd/AM62PX/09_01_00_08/exports/docs/linux/Overview_Building_the_SDK.html) to build the SDK with Yocto
+  - Follow this [guide](https://software-dl.ti.com/processor-sdk-linux-rt/esd/AM62PX/09_01_00_08/exports/docs/linux/Overview_Building_the_SDK.html) to build the image with Yocto
 
 - If there are problems encountered flashing the SD card with BalenaEtcher as mentioned in the documentation, use this command instead: 
 
@@ -165,7 +168,7 @@ Run the executable on the target:
 
 - Get the IP of the target board:
 
-  - Option 1: from the UART, on the board: 
+  - <u>Option 1</u>: from the UART, on the board: 
 
     ```bash
     sudo picocom -b 115200 /dev/ttyUSB0
@@ -174,17 +177,15 @@ Run the executable on the target:
     ip a
     ```
 
-  - Option 2: Get the IP from your host with nmap
+  - <u>Option 2</u>: Get the IP from your host with nmap
 
     ```bash
-    ## Install nmap if it is not yet on your system
-    sudo apt install nmap
     ## Find the IP of the board. You need to know your ip (ifconfig or ip a)
     ## HOST_IP should be built like this :
     ## If the ip is 192.168.1.86, in the following command HOST_IP = 192.168.1.0/24
     nmap -sn <HOST_IP>/24 | grep am62pxx   
     ```
-
+  
 - Then transfer the executable on the board: 
 
   ```bash
@@ -215,7 +216,7 @@ Some configurations are provided in the folder `lvgl_conf_example` .
 
 The default configuration used is lv_conf_fb_4_threads.h. To change the configuration, modify the `lvgl_port_linux/lv_conf.h` file with the desired configuration.
 
-Also modify the `lv_port_linux/CMakelists.txt` file option: 
+Also modify the `lvgl_port_linux/CMakelists.txt` file option: 
 
 - LV_USE_WAYLAND
 - LV_USE_SDL
@@ -229,7 +230,12 @@ Default is for fbdev backend. Only set 1 of these options to "ON" and ensure it'
 
 The folder `lvgl_port_linux` is an example of an application using LVGL. 
 
-LVGL is integrated as a submodule in the folder. To change the version of LVGL, modify the submodule properties in the file `.gitmodules`.
+LVGL is integrated as a submodule in the folder. To change the version of the library: 
+
+```bash
+cd lvgl_port_linux
+git checkout <branch_name_or_commit_hash>
+```
 
 The file `main.c` is the default application provided and is configured to run the benchmark demo provided by LVGL library. 
 
