@@ -20,45 +20,45 @@ The default buffering is fbdev.
 
 | Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
 | ------------------------- | -------- | -------- | --------- | ----------- | ---------- |
-| Empty screen              | 15.00%   | 24       | 5         | 1           | 4          |
-| Moving wallpaper          | 29.00%   | 27       | 9         | 5           | 4          |
-| Single rectangle          | 5.00%    | 27       | 0         | 0           | 0          |
-| Multiple rectangles       | 14.00%   | 27       | 4         | 2           | 2          |
-| Multiple RGB images       | 31.00%   | 27       | 9         | 5           | 4          |
-| Multiple ARGB images      | 66.00%   | 28       | 21        | 17          | 4          |
-| Rotated ARGB images       | 94.00%   | 5        | 167       | 163         | 4          |
-| Multiple labels           | 59.00%   | 28       | 15        | 11          | 4          |
-| Screen sized text         | 2.00%    | 27       | 0         | 0           | 0          |
-| Multiple arcs             | 43.00%   | 28       | 14        | 10          | 4          |
-| Containers                | 74.00%   | 28       | 24        | 20          | 4          |
-| Containers with overlay   | 91.00%   | 16       | 51        | 47          | 4          |
-| Containers with opa       | 90.00%   | 17       | 49        | 45          | 4          |
-| Containers with opa_layer | 92.00%   | 13       | 67        | 63          | 4          |
-| Containers with scrolling | 85.00%   | 27       | 28        | 24          | 4          |
-| Widgets demo              | 28.00%   | 27       | 8         | 7           | 1          |
-| All scenes avg.           | 51.00%   | 23       | 29        | 26          | 3          |
+| Empty screen              | 17.00%   | 24       | 6         | 1           | 5          |
+| Moving wallpaper          | 83.00%   | 16       | 55        | 50          | 5          |
+| Single rectangle          | 12.00%   | 27       | 0         | 0           | 0          |
+| Multiple rectangles       | 13.00%   | 27       | 4         | 2           | 2          |
+| Multiple RGB images       | 53.00%   | 26       | 20        | 15          | 5          |
+| Multiple ARGB images      | 43.00%   | 27       | 14        | 9           | 5          |
+| Rotated ARGB images       | 84.00%   | 26       | 30        | 26          | 4          |
+| Multiple labels           | 47.00%   | 27       | 16        | 11          | 5          |
+| Screen sized text         | 87.00%   | 22       | 36        | 32          | 4          |
+| Multiple arcs             | 52.00%   | 28       | 15        | 11          | 4          |
+| Containers                | 33.00%   | 27       | 9         | 9           | 0          |
+| Containers with overlay   | 86.00%   | 17       | 51        | 46          | 5          |
+| Containers with opa       | 67.00%   | 26       | 23        | 22          | 1          |
+| Containers with opa_layer | 88.00%   | 18       | 46        | 42          | 4          |
+| Containers with scrolling | 71.00%   | 29       | 23        | 18          | 5          |
+| Widgets demo              | 28.00%   | 26       | 9         | 8           | 1          |
+| All scenes avg.           | 54.00%   | 24       | 21        | 18          | 3          |
 
 **Frame buffer, 4 threads**
 
 | Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
 | ------------------------- | -------- | -------- | --------- | ----------- | ---------- |
-| Empty screen              | 15.00%   | 24       | 5         | 1           | 4          |
-| Moving wallpaper          | 26.00%   | 27       | 8         | 4           | 4          |
-| Single rectangle          | 5.00%    | 26       | 0         | 0           | 0          |
-| Multiple rectangles       | 19.00%   | 28       | 6         | 4           | 2          |
-| Multiple RGB images       | 28.00%   | 27       | 8         | 4           | 4          |
-| Multiple ARGB images      | 40.00%   | 28       | 12        | 8           | 4          |
-| Rotated ARGB images       | 87.00%   | 14       | 60        | 56          | 4          |
-| Multiple labels           | 40.00%   | 27       | 9         | 5           | 4          |
-| Screen sized text         | 2.00%    | 27       | 0         | 0           | 0          |
-| Multiple arcs             | 27.00%   | 27       | 8         | 4           | 4          |
-| Containers                | 45.00%   | 26       | 14        | 10          | 4          |
-| Containers with overlay   | 78.00%   | 28       | 26        | 22          | 4          |
-| Containers with opa       | 79.00%   | 28       | 23        | 19          | 4          |
-| Containers with opa_layer | 85.00%   | 23       | 33        | 29          | 4          |
-| Containers with scrolling | 51.00%   | 28       | 16        | 12          | 4          |
-| Widgets demo              | 19.00%   | 27       | 6         | 5           | 1          |
-| All scenes avg.           | 40.00%   | 25       | 14        | 11          | 3          |
+| Empty screen              | 17.00%   | 24       | 6         | 1           | 5          |
+| Moving wallpaper          | 52.00%   | 28       | 19        | 14          | 5          |
+| Single rectangle          | 7.00%    | 27       | 0         | 0           | 0          |
+| Multiple rectangles       | 15.00%   | 26       | 5         | 3           | 2          |
+| Multiple RGB images       | 33.00%   | 28       | 11        | 6           | 5          |
+| Multiple ARGB images      | 29.00%   | 27       | 9         | 4           | 5          |
+| Rotated ARGB images       | 41.00%   | 27       | 14        | 9           | 5          |
+| Multiple labels           | 30.00%   | 27       | 9         | 4           | 5          |
+| Screen sized text         | 47.00%   | 27       | 16        | 11          | 5          |
+| Multiple arcs             | 33.00%   | 27       | 9         | 4           | 5          |
+| Containers                | 23.00%   | 28       | 6         | 5           | 1          |
+| Containers with overlay   | 68.00%   | 27       | 24        | 19          | 5          |
+| Containers with opa       | 44.00%   | 28       | 12        | 11          | 1          |
+| Containers with opa_layer | 59.00%   | 28       | 19        | 18          | 1          |
+| Containers with scrolling | 39.00%   | 29       | 12        | 7           | 5          |
+| Widgets demo              | 20.00%   | 27       | 6         | 5           | 1          |
+| All scenes avg.           | 34.00%   | 27       | 10        | 7           | 3          |
 
 The other configurations are: 
 
@@ -123,7 +123,7 @@ This [document](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devto
   sudo dd if=path/to/am62p-image.wic of=/dev/sdX bs=4M status=progress conv=fsync
   ```
 
-- Use the UART to ensure the system has started successfully.
+- Insert the SD card in the slot and power up the board. The ti-app launcher should display an UI on the screen.
 
 
 
@@ -160,8 +160,8 @@ Build the docker image and the lvgl benchmark application:
 
 ```bash
 cd lv_port_texas_sk-am62p-lp
-./scripts/docker_setup.sh --build
-./scripts/docker_setup.sh --run
+./scripts/docker_setup.sh --create-image
+./scripts/docker_setup.sh --build-app
 ```
 
 Run the executable on the target: 
@@ -259,14 +259,20 @@ If there is any problem with the output folder generated permissions, modify the
 sudo chown -R $(whoami):$(whoami) lvgl_port_linux/bin
 ```
 
-
-
 ### Wayland example runtime error
 
 While running the application, if there is an error about `XDG_RUNTIME_DIR`, add the following environment variable on the board.
 
 ```bash
 export XDG_RUNTIME_DIR=/run/user/1000
+```
+
+### Changing configuration causes errors building the application
+
+CMake may have troubles with CMakeLists.txt changes with some variables setup. If there is any problem building, try to clean the build folder: 
+
+```bash
+rm -rf lv_port_linux/build-arm64
 ```
 
 
