@@ -7,15 +7,9 @@ option(LV_USE_WAYLAND "Use the wayland client backend" OFF)
 option(LV_USE_SDL "Use the SDL backend" OFF)
 option(LV_USE_DRM "Use the libdrm backend" OFF)
 
-option(DEBUG_MODE "Disable optimizations and enable debugging" OFF)
-
 set(CMAKE_C_STANDARD 99) # LVGL officially supports C99 and above
 set(CMAKE_CXX_STANDARD 17) #C17
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-if (DEBUG_MODE)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -ggdb")
-endif(DEBUG_MODE)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
