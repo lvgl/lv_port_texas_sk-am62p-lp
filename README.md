@@ -108,7 +108,7 @@ This [document](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devto
   - UART
   - Power
   - Screen (HDMI)
-  - Ethernet (Connect the board to the same LAN the host is, the board obtains an IP address from the network manager)
+  - Ethernet (Connect the board to the same LAN the host is, the board obtains an IP address from DHCP)
 
 - SD card is needed to flash the image. 
 
