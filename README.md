@@ -8,7 +8,7 @@ This guide provides steps to setup the SK-AM62P-LP starter kit and to cross-comp
 
 ## Buy
 
-You can purchase the AM62P-LP board from TI website.
+You can purchase the AM62P-LP board from from [TI website](https://www.ti.com/tool/SK-AM62P-LP).
 
 
 
@@ -257,6 +257,29 @@ If there is any problem with the output folder generated permissions, modify the
 
 ```bash
 sudo chown -R $(whoami):$(whoami) lvgl_port_linux/bin
+```
+
+### Fbdev example runtime error
+
+This error can be printed when running the application: 
+
+```bash
+[Warn]	(1382.767, +37)	 lv_display_refr_timer: No draw buffer lv_refr.c:374
+[Warn]	(1382.804, +37)	 lv_display_refr_timer: No draw buffer lv_refr.c:374
+[Warn]	(1382.841, +37)	 lv_display_refr_timer: No draw buffer lv_refr.c:374
+[Warn]	(1382.878, +37)	 lv_display_refr_timer: No draw buffer lv_refr.c:374
+```
+
+To fix the issue find the existing fbdev available: 
+
+```bash
+ls /dev/fb*
+```
+
+Export the variable to match the fbdev name: 
+
+```bash
+export LV_LINUX_FBDEV_DEVICE=/dev/fb0
 ```
 
 ### Wayland example runtime error
