@@ -60,6 +60,7 @@ The other configurations are:
 
 -   DRM
 -   Wayland
+-   SDL
 
 Any of these buffering strategies can be used with multiple threads to render the frames.
 
@@ -103,11 +104,12 @@ This [document](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devto
     -   Screen (HDMI)
     -   Ethernet (Connect the board to the same LAN the host is, the board obtains an IP address from the network manager)
 
--   SD card is needed to flash the image.
+- SD card is needed to flash the image.
 
-    -   Follow the [guide](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) to download a pre-built `.wic` image
+  -   Follow the [guide](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) to download a pre-built `.wic` image
 
-    -   Follow this [guide](https://software-dl.ti.com/processor-sdk-linux-rt/esd/AM62PX/09_01_00_08/exports/docs/linux/Overview_Building_the_SDK.html) to build the image with Yocto
+  -   Follow this [guide](https://software-dl.ti.com/processor-sdk-linux-rt/esd/AM62PX/09_01_00_08/exports/docs/linux/Overview_Building_the_SDK.html) to build the image with Yocto. 
+      -   A tutorial to get lvgl recipe setup on Yocto is provided in [LVGL official documentation - Yocto](https://docs.lvgl.io/master/details/integration/os/yocto/lvgl_recipe.html)
 
 -   If there are problems encountered flashing the SD card with BalenaEtcher as mentioned in the documentation, use this command instead:
 
@@ -146,6 +148,21 @@ Clone the repository:
 git clone --recurse-submodules https://github.com/lvgl/lv_port_texas_sk-am62p-lp.git
 ```
 
+**IMPORTANT**: 
+
+- default application from lv_port_linux runs the widget demo. To run the benchmark demo, modify `lv_port_linux/main.c` : 
+  ```c
+  /*Create a Demo*/
+  // lv_demo_widgets();
+  // lv_demo_widgets_start_slideshow();
+  lv_demo_benchmark();
+  ```
+
+- The default lv_conf.h might not be the best configuration for the board. Feel free to replace the default lv_conf.h with one of the provided configurations in `lv_conf_example` folder.
+  ```bash
+  cp lv_conf_example/lv_conf_fb_4_threads.h lv_port_linux/lv_conf.h
+  ```
+
 Build the docker image and the lvgl benchmark application:
 
 ```bash
@@ -179,14 +196,14 @@ Run the executable on the target:
 -   Then transfer the executable on the board:
 
     ```bash
-    scp lvgl_port_linux/bin/lvgl-app root@<BOARD_IP>:/root
+    scp lv_port_linux/bin/lvglsim root@<BOARD_IP>:/root
     ```
 
 -   Start the application
 
     ```bash
     ssh root@<BOARD_IP>
-
+    
     ## stop default presentation screen if it is running
     systemctl stop ti-apps-launcher
     ######################################
@@ -194,36 +211,30 @@ Run the executable on the target:
     systemctl stop weston.socket
     systemctl stop weston.service
     ######################################
-
-    ./lvgl-app
+    
+    export LV_LINUX_FBDEV_DEVICE=/dev/fb1
+    
+    ./lvglsim
     ```
 
 ### Change configuration
 
 Some configurations are provided in the folder `lvgl_conf_example` .
 
-The default configuration used is lv_conf_fb_4_threads.h. To change the configuration, modify the `lvgl_port_linux/lv_conf.h` file with the desired configuration.
-
-Also modify the `lvgl_port_linux/CMakelists.txt` file option:
-
--   LV_USE_WAYLAND
--   LV_USE_SDL
--   LV_USE_DRM
-
-Default is for fbdev backend. Only set 1 of these options to "ON" and ensure it's coherent with `lv_conf.h`. This can also be changed from the script `scripts/build_app.sh`.
+The default configuration used is lv_conf_fb_4_threads.h. To change the configuration, modify the `lv_port_linux/lv_conf.h` file with the desired configuration.
 
 ### Start with your own application
 
-The folder `lvgl_port_linux` is an example of an application using LVGL.
+The folder `lv_port_linux` is an example of an application using LVGL.
 
 LVGL is integrated as a submodule in the folder. To change the version of the library:
 
 ```bash
-cd lvgl_port_linux
+cd lv_port_linux/lvgl
 git checkout <branch_name_or_commit_hash>
 ```
 
-The file `main.c` is the default application provided and is configured to run the benchmark demo provided by LVGL library.
+The file `main.c` is the default application provided and is configured to run the widget demo provided by LVGL library.
 
 The main steps to create your own application are:
 
@@ -231,7 +242,7 @@ The main steps to create your own application are:
 -   Add any folders and files to extend the functionalities
 -   Update `Dockerfile` to add any package
 -   Modify `CMakeLists.txt` provided file to ensure all the required files are compiled and linked
--   Use the docker scripts provided to build the application for ARM64 architecture.
+-   Use the docker scripts provided to build the application for Arm64 architecture.
 
 ## TroubleShooting
 
@@ -240,7 +251,7 @@ The main steps to create your own application are:
 If there is any problem with the output folder generated permissions, modify the permissions:
 
 ```bash
-sudo chown -R $(whoami):$(whoami) lvgl_port_linux/bin
+sudo chown -R $(whoami):$(whoami) lv_port_linux/bin
 ```
 
 ### Fbdev example runtime error
