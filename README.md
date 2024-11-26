@@ -132,7 +132,7 @@ This guide was tested on Ubuntu 22.04 host.
 
 #### Install docker
 
--   Follow this [tutorial](/https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04) to install and setup docker on your system.
+-   Follow this [tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04) to install and setup docker on your system.
 
 -   Support to run arm64 docker containers on the host:
     ```bash
