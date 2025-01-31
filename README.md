@@ -6,7 +6,7 @@ This guide provides steps to setup the SK-AM62P-LP starter kit and to cross-comp
 
 ## Buy
 
-You can purchase the AM62P-LP board from TI website.
+You can purchase the AM62P-LP board from [TI website](https://www.ti.com/tool/SK-AM62P-LP).
 
 ## Benchmark
 
