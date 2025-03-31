@@ -13,6 +13,15 @@ You can purchase the AM62P-LP board from [Texas Instruments website](https://www
 
 The default buffering is fbdev.
 
+
+Check out SK-AM62P-LP in action, running LVGL's benchmark demo:
+
+<a href="https://www.youtube.com/watch?v=IAalHCDVPQw">
+    <img src="https://github.com/user-attachments/assets/1fb9877c-1993-4b85-a92f-ad6822c8a247" width="75%" alt="image">
+    
+</a>
+
+
 **Frame buffer, 1 thread**
 
 | Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
@@ -64,12 +73,6 @@ The other configurations are:
 -   SDL
 
 Any of these buffering strategies can be used with multiple threads to render the frames.
-
-Check out SK-AM62P-LP in action, running LVGL's benchmark demo:
-
-<a href="https://www.youtube.com/watch?v=IAalHCDVPQw">
-    <img src="https://github.com/user-attachments/assets/1fb9877c-1993-4b85-a92f-ad6822c8a247" width="50%" alt="image">
-</a>
 
 ## Specification
 
