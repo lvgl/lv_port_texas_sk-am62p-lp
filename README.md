@@ -1,4 +1,4 @@
-# LVGL ported to AM62P-LP (TI)
+# LVGL ported to AM62P-LP (Texas Instruments)
 
 ## Overview
 
@@ -6,7 +6,7 @@ This guide provides steps to setup the SK-AM62P-LP starter kit and to cross-comp
 
 ## Buy
 
-You can purchase the AM62P-LP board from [TI website](https://www.ti.com/tool/SK-AM62P-LP). Check out the product specification in the [product folder](https://www.ti.com/product/AM62P)!
+You can purchase the AM62P-LP board from [Texas Instruments website](https://www.ti.com/tool/SK-AM62P-LP). Check out the product specification in the [product folder](https://www.ti.com/product/AM62P)!
 
 
 ## Benchmark
@@ -102,7 +102,7 @@ Check out SK-AM62P-LP in action, running LVGL's benchmark demo:
 
 ### Hardware setup
 
-This [document](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) from TI provides detailed information for the hardware setup
+This [document](https://dev.ti.com/tirex/content/tirex-product-tree/am62px-devtools/docs/am62px_skevm_quick_start_guide.html) from Texas Instruments provides detailed information for the hardware setup
 
 -   Connect to the board the following:
 
