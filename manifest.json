@@ -1,5 +1,5 @@
 {
-    "name": "TI SK-AM62P-LP",
+    "name": "Texas Instruments SK-AM62P-LP",
     "maintainer": "LVGL",
     "hostOperatingsystem": [
         "Linux"
@@ -9,8 +9,8 @@
         "Buildroot"
     ],
     "hardware": {
-        "chipVendor": "TI",
-        "manufacturer": "TI",
+        "chipVendor": "Texas Instruments",
+        "manufacturer": "Texas Instruments",
         "specs": {
             "MPU": "AM625P with Quad 64-bit Arm® Cortex®-A53 @1.4GHz",
             "MCU": "two ARM® Cortex®-R5F single core up to 800MHz",
